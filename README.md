@@ -1,71 +1,70 @@
-# tab-picker README
+# Tab Picker
 
-This is the README for your extension "tab-picker". After writing up a brief description, we recommend including the following sections.
+Vim-style tab navigation for VS Code, inspired by [Barbar.nvim](https://github.com/romgrk/barbar.nvim)'s BufferPick. Press a key, jump to a tab.
 
-## Features
+## What It Does
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+Temporarily adds `[A]`, `[S]`, `[D]` letters to your tab labels. Type the letter to jump to that tab. No popups, no menus.
 
-For example if there is an image subfolder under your extension project workspace:
+## Usage
 
-\!\[feature X\]\(images/feature-x.png\)
+### Navigate Mode
+- **Trigger:** `Ctrl+'` 
+- **Action:** Type a letter → Jump to tab
+- **Cancel:** `ESC` or any unassigned letter
 
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+### Delete Mode
+- **Trigger:** `Ctrl+Shift+'`
+- **Action:** Type a letter → Close tab
+- **Cancel:** `ESC` or any unassigned letter
+
+## How It Works
+
+Uses VS Code's `workbench.editor.customLabels.patterns` API to modify tab labels on-the-fly:
+
+1. Saves your original labels
+2. Assigns smart keys (prioritizes filename letters)
+3. Applies patterns like `[A] ${filename}` to each tab
+4. Intercepts keystrokes to handle selection
+5. Restores original labels when done
+
+**Smart key assignment:** Prioritizes letters from the filename first, then falls back to home row → top row → bottom row (max 26 tabs)
+
+## Limitations
+
+### Duplicate Tabs
+When the same file is open multiple times, all instances show **all keys**:
+
+```
+[A/S] file.ts  ← Both show both keys
+[A/S] file.ts
+```
+
+Press `A` → jumps to first instance  
+Press `S` → jumps to second instance
+
+**Why?** VS Code's `customLabels` uses file path as the pattern key. Same file = same pattern for all instances. No API exists to override individual tab labels.
+
+### Other Limits
+- **Untitled files** - Labels don't appear on unsaved "Untitled" files (VS Code API limitation).
+- **File tabs only** - Doesn't work with terminals, webviews, or custom editors
+- **26 tab maximum** - One key per letter
+- **Workspace setting** - Labels temporarily modify workspace config
 
 ## Requirements
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+VS Code 1.105.0+
 
-## Extension Settings
+## Commands
 
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
+- `Tab Picker: Navigate` - Activate navigate mode
+- `Tab Picker: Delete` - Activate delete mode  
+- `Tab Picker: Cleanup` - Remove leftover labels (recovery command)
 
-For example:
+## Inspiration
 
-This extension contributes the following settings:
-
-* `myExtension.enable`: Enable/disable this extension.
-* `myExtension.thing`: Set to `blah` to do something.
-
-## Known Issues
-
-Calling out known issues can help limit users opening duplicate issues against your extension.
-
-## Release Notes
-
-Users appreciate release notes as you update your extension.
-
-### 1.0.0
-
-Initial release of ...
-
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
+Based on [Barbar.nvim](https://github.com/romgrk/barbar.nvim)'s BufferPick feature.
 
 ---
 
-## Following extension guidelines
-
-Ensure that you've read through the extensions guidelines and follow the best practices for creating your extension.
-
-* [Extension Guidelines](https://code.visualstudio.com/api/references/extension-guidelines)
-
-## Working with Markdown
-
-You can author your README using Visual Studio Code. Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux).
-* Toggle preview (`Shift+Cmd+V` on macOS or `Shift+Ctrl+V` on Windows and Linux).
-* Press `Ctrl+Space` (Windows, Linux, macOS) to see a list of Markdown snippets.
-
-## For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**
+**MIT License** • Made with ❤️ for Vim refugees
