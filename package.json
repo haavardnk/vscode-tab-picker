@@ -1,8 +1,9 @@
 {
   "name": "tab-picker",
-  "displayName": "tab-picker",
-  "description": "",
-  "version": "0.0.1",
+  "displayName": "Tab Picker",
+  "description": "A tab picker inspired by Barbar (Neovim)",
+  "version": "0.0.0",
+  "publisher": "haavardnk",
   "engines": {
     "vscode": "^1.105.0"
   },
@@ -14,8 +15,250 @@
   "contributes": {
     "commands": [
       {
-        "command": "tab-picker.helloWorld",
-        "title": "Hello World"
+        "command": "tab-picker.pickTab",
+        "title": "Tab Picker: Pick a Tab"
+      },
+      {
+        "command": "tab-picker.deleteTab",
+        "title": "Tab Picker: Delete a Tab"
+      },
+      {
+        "command": "tab-picker.cancel",
+        "title": "Tab Picker: Cancel"
+      },
+      {
+        "command": "tab-picker.cleanup",
+        "title": "Tab Picker: Force Cleanup Labels"
+      },
+      {
+        "command": "tab-picker.keyPress",
+        "title": "Tab Picker: Key Press (Internal)"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "tab-picker.pickTab",
+        "key": "ctrl+'",
+        "mac": "ctrl+'"
+      },
+      {
+        "command": "tab-picker.deleteTab",
+        "key": "ctrl+shift+'",
+        "mac": "ctrl+shift+'"
+      },
+      {
+        "command": "tab-picker.cancel",
+        "key": "escape",
+        "mac": "escape",
+        "when": "tabPickerActive"
+      },
+      {
+        "command": "tab-picker.keyPress",
+        "key": "a",
+        "args": {
+          "key": "a"
+        },
+        "when": "tabPickerActive"
+      },
+      {
+        "command": "tab-picker.keyPress",
+        "key": "b",
+        "args": {
+          "key": "b"
+        },
+        "when": "tabPickerActive"
+      },
+      {
+        "command": "tab-picker.keyPress",
+        "key": "c",
+        "args": {
+          "key": "c"
+        },
+        "when": "tabPickerActive"
+      },
+      {
+        "command": "tab-picker.keyPress",
+        "key": "d",
+        "args": {
+          "key": "d"
+        },
+        "when": "tabPickerActive"
+      },
+      {
+        "command": "tab-picker.keyPress",
+        "key": "e",
+        "args": {
+          "key": "e"
+        },
+        "when": "tabPickerActive"
+      },
+      {
+        "command": "tab-picker.keyPress",
+        "key": "f",
+        "args": {
+          "key": "f"
+        },
+        "when": "tabPickerActive"
+      },
+      {
+        "command": "tab-picker.keyPress",
+        "key": "g",
+        "args": {
+          "key": "g"
+        },
+        "when": "tabPickerActive"
+      },
+      {
+        "command": "tab-picker.keyPress",
+        "key": "h",
+        "args": {
+          "key": "h"
+        },
+        "when": "tabPickerActive"
+      },
+      {
+        "command": "tab-picker.keyPress",
+        "key": "i",
+        "args": {
+          "key": "i"
+        },
+        "when": "tabPickerActive"
+      },
+      {
+        "command": "tab-picker.keyPress",
+        "key": "j",
+        "args": {
+          "key": "j"
+        },
+        "when": "tabPickerActive"
+      },
+      {
+        "command": "tab-picker.keyPress",
+        "key": "k",
+        "args": {
+          "key": "k"
+        },
+        "when": "tabPickerActive"
+      },
+      {
+        "command": "tab-picker.keyPress",
+        "key": "l",
+        "args": {
+          "key": "l"
+        },
+        "when": "tabPickerActive"
+      },
+      {
+        "command": "tab-picker.keyPress",
+        "key": "m",
+        "args": {
+          "key": "m"
+        },
+        "when": "tabPickerActive"
+      },
+      {
+        "command": "tab-picker.keyPress",
+        "key": "n",
+        "args": {
+          "key": "n"
+        },
+        "when": "tabPickerActive"
+      },
+      {
+        "command": "tab-picker.keyPress",
+        "key": "o",
+        "args": {
+          "key": "o"
+        },
+        "when": "tabPickerActive"
+      },
+      {
+        "command": "tab-picker.keyPress",
+        "key": "p",
+        "args": {
+          "key": "p"
+        },
+        "when": "tabPickerActive"
+      },
+      {
+        "command": "tab-picker.keyPress",
+        "key": "q",
+        "args": {
+          "key": "q"
+        },
+        "when": "tabPickerActive"
+      },
+      {
+        "command": "tab-picker.keyPress",
+        "key": "r",
+        "args": {
+          "key": "r"
+        },
+        "when": "tabPickerActive"
+      },
+      {
+        "command": "tab-picker.keyPress",
+        "key": "s",
+        "args": {
+          "key": "s"
+        },
+        "when": "tabPickerActive"
+      },
+      {
+        "command": "tab-picker.keyPress",
+        "key": "t",
+        "args": {
+          "key": "t"
+        },
+        "when": "tabPickerActive"
+      },
+      {
+        "command": "tab-picker.keyPress",
+        "key": "u",
+        "args": {
+          "key": "u"
+        },
+        "when": "tabPickerActive"
+      },
+      {
+        "command": "tab-picker.keyPress",
+        "key": "v",
+        "args": {
+          "key": "v"
+        },
+        "when": "tabPickerActive"
+      },
+      {
+        "command": "tab-picker.keyPress",
+        "key": "w",
+        "args": {
+          "key": "w"
+        },
+        "when": "tabPickerActive"
+      },
+      {
+        "command": "tab-picker.keyPress",
+        "key": "x",
+        "args": {
+          "key": "x"
+        },
+        "when": "tabPickerActive"
+      },
+      {
+        "command": "tab-picker.keyPress",
+        "key": "y",
+        "args": {
+          "key": "y"
+        },
+        "when": "tabPickerActive"
+      },
+      {
+        "command": "tab-picker.keyPress",
+        "key": "z",
+        "args": {
+          "key": "z"
+        },
+        "when": "tabPickerActive"
       }
     ]
   },

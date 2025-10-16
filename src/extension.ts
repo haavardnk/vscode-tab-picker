@@ -1,26 +1,36 @@
-// The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
+import * as picker from './picker.js';
+import { cleanupLabels } from './labels.js';
 
-// This method is called when your extension is activated
-// Your extension is activated the very first time the command is executed
-export function activate(context: vscode.ExtensionContext) {
+export async function activate(context: vscode.ExtensionContext) {
+	const statusBar = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left, 100);
+	await vscode.commands.executeCommand('setContext', 'tabPickerActive', false);
 
-	// Use the console to output diagnostic information (console.log) and errors (console.error)
-	// This line of code will only be executed once when your extension is activated
-	console.log('Congratulations, your extension "tab-picker" is now active!');
+	await cleanupLabels(context);
+	picker.initialize(context, statusBar);
 
-	// The command has been defined in the package.json file
-	// Now provide the implementation of the command with registerCommand
-	// The commandId parameter must match the command field in package.json
-	const disposable = vscode.commands.registerCommand('tab-picker.helloWorld', () => {
-		// The code you place here will be executed every time your command is executed
-		// Display a message box to the user
-		vscode.window.showInformationMessage('Hello World from tab-picker!');
-	});
+	context.subscriptions.push(
+		statusBar,
+		vscode.commands.registerCommand('tab-picker.pickTab', async () => await picker.show(false)),
+		vscode.commands.registerCommand('tab-picker.deleteTab', async () => await picker.show(true)),
+		vscode.commands.registerCommand('tab-picker.cleanup', async () => {
+			await cleanupLabels(context);
+			vscode.window.showInformationMessage('Tab Picker: Cleanup completed!');
+		}),
+		vscode.commands.registerCommand('tab-picker.keyPress', (args) =>
+			picker.isActive() && args?.key && picker.handleKey(args.key)
+		),
+		vscode.commands.registerCommand('tab-picker.cancel', async () => await picker.hide())
+	);
 
-	context.subscriptions.push(disposable);
+	return {
+		isPickerActive: () => picker.isActive(),
+		handleKey: (key: string) => picker.handleKey(key)
+	};
 }
 
-// This method is called when your extension is deactivated
-export function deactivate() {}
+export async function deactivate() {
+	if (picker.isActive()) {
+		await picker.hide();
+	}
+}
