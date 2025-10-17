@@ -6,6 +6,8 @@ Vim-style tab navigation for VS Code, inspired by [Barbar.nvim](https://github.c
 
 Temporarily adds `[A]`, `[S]`, `[D]` letters to your tab labels. Type the letter to jump to that tab. No popups, no menus.
 
+![tab-picker-demo](https://github.com/user-attachments/assets/8efedafa-161f-4d15-bc0d-a98917cef72d)
+
 ## Usage
 
 ### Navigate Mode
