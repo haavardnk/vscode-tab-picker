@@ -21,6 +21,28 @@
   "activationEvents": [],
   "main": "./dist/extension.js",
   "contributes": {
+    "configuration": {
+      "title": "Tab Picker",
+      "properties": {
+        "tabPicker.keyAssignmentStrategy": {
+          "type": "string",
+          "default": "filename",
+          "enum": [
+            "filename",
+            "leftHand",
+            "rightHand",
+            "homeRow"
+          ],
+          "enumDescriptions": [
+            "Assign keys based on letters in the filename (e.g., 'tabs.ts' gets 't')",
+            "Prioritize keys on the left side of the keyboard (a, s, d, f, q, w, e, r, etc.)",
+            "Prioritize keys on the right side of the keyboard (j, k, l, h, u, i, o, p, etc.)",
+            "Prioritize home row keys first (a, s, d, f, g, h, j, k, l, then q, w, e, r, etc.)"
+          ],
+          "description": "Strategy for assigning keyboard shortcuts to tabs"
+        }
+      }
+    },
     "commands": [
       {
         "command": "tab-picker.pickTab",

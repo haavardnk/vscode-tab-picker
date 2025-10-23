@@ -1,6 +1,17 @@
 # Change Log
 
-## [1.0.0] - 2025-10-16
+## [0.2.0] - 2025-10-23
+
+### Added
+
+- Configurable key assignment strategies via `tabPicker.keyAssignmentStrategy` setting
+
+  - **Filename** (default) - Assigns keys based on letters in the filename
+  - **Left Hand** - Prioritizes keys on the left side of the keyboard
+  - **Right Hand** - Prioritizes keys on the right side of the keyboard
+  - **Home Row** - Prioritizes home row keys first
+
+## [0.1.0] - 2025-10-16
 
 ### Added
 
