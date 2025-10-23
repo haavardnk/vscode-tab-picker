@@ -1,8 +1,25 @@
 import * as vscode from 'vscode';
-import { TabInfo } from './types.js';
-import { KEYS } from './constants.js';
+import { TabInfo, KeyAssignmentStrategy } from './types.js';
+import { HOME_ROW_KEYS, LEFT_HAND_KEYS, RIGHT_HAND_KEYS } from './constants.js';
+
+export function getKeyOrder(strategy: KeyAssignmentStrategy): readonly string[] {
+    switch (strategy) {
+        case KeyAssignmentStrategy.LeftHand:
+            return LEFT_HAND_KEYS;
+        case KeyAssignmentStrategy.RightHand:
+            return RIGHT_HAND_KEYS;
+        case KeyAssignmentStrategy.HomeRow:
+        case KeyAssignmentStrategy.Filename:
+        default:
+            return HOME_ROW_KEYS;
+    }
+}
 
 export function collectTabs(): TabInfo[] {
+    const config = vscode.workspace.getConfiguration('tabPicker');
+    const strategy = config.get<KeyAssignmentStrategy>('keyAssignmentStrategy', KeyAssignmentStrategy.Filename);
+    const keyOrder = getKeyOrder(strategy);
+
     const tabs: TabInfo[] = [];
     const usedKeys = new Set<string>();
 
@@ -14,14 +31,14 @@ export function collectTabs(): TabInfo[] {
                 continue;
             }
 
-            const key = assignKey(label, usedKeys);
+            const key = assignKey(label, usedKeys, strategy, keyOrder);
 
             if (key) {
                 const info: TabInfo = { group, tab, key, index, uri: extractUri(tab) };
                 tabs.push(info);
                 usedKeys.add(key);
 
-                if (usedKeys.size >= KEYS.length) {
+                if (usedKeys.size >= keyOrder.length) {
                     return tabs;
                 }
             }
@@ -56,16 +73,18 @@ export function extractUri(tab: vscode.Tab): vscode.Uri | undefined {
     }
 }
 
-export function assignKey(filename: string, usedKeys: Set<string>): string | undefined {
-    const name = filename.replace(/\.[^/.]+$/, '').toLowerCase();
+export function assignKey(filename: string, usedKeys: Set<string>, strategy: KeyAssignmentStrategy, keyOrder: readonly string[]): string | undefined {
+    if (strategy === KeyAssignmentStrategy.Filename) {
+        const name = filename.replace(/\.[^/.]+$/, '').toLowerCase();
 
-    for (const char of name) {
-        if (/[a-z]/.test(char) && !usedKeys.has(char) && KEYS.includes(char)) {
-            return char;
+        for (const char of name) {
+            if (/[a-z]/.test(char) && !usedKeys.has(char) && keyOrder.includes(char)) {
+                return char;
+            }
         }
     }
 
-    return KEYS.find(k => !usedKeys.has(k));
+    return keyOrder.find(k => !usedKeys.has(k));
 }
 
 export async function jump(tab: TabInfo): Promise<void> {

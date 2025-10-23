@@ -30,14 +30,37 @@ Uses VS Code's `workbench.editor.customLabels.patterns` API to modify tab labels
 4. Intercepts keystrokes to handle selection
 5. Restores original labels when done
 
-**Smart key assignment:** Prioritizes letters from the filename first, then falls back to home row → top row → bottom row (max 26 tabs)
+## Configuration
+
+### Key Assignment Strategy
+
+Control how keys are assigned to tabs via `tabPicker.keyAssignmentStrategy`:
+
+- **`filename`** (default) - Assigns keys based on letters in the filename, then falls back to sequential order
+  - Example: `tabs.ts` gets `t`, `picker.ts` gets `p`, `extension.ts` gets `e`
+  
+- **`leftHand`** - Prioritizes keys on the left side of the keyboard (ideal for left-hand navigation)
+  - Order: `a, s, d, f` → `q, w, e, r, t` → `z, x, c, v` → right-hand keys as fallback
+  
+- **`rightHand`** - Prioritizes keys on the right side of the keyboard (ideal for right-hand navigation)
+  - Order: `j, k, l, h` → `u, i, o, p, y` → `n, m` → left-hand keys as fallback
+  
+- **`homeRow`** - Prioritizes home row keys first (balanced, comfortable typing position)
+  - Order: `a, s, d, f, g, h, j, k, l` → `q, w, e, r, t, y, u, i, o, p` → `z, x, c, v, b, n, m`
+
+**To change the setting:**
+
+1. Open VS Code Settings (`Cmd+,` / `Ctrl+,`)
+2. Search for `Tab Picker: Key Assignment Strategy`
+3. Select your preferred strategy
 
 ## Limitations
 
 ### Duplicate Tabs
+
 When the same file is open multiple times, all instances show **all keys**:
 
-```
+```text
 [A/S] file.ts  ← Both show both keys
 [A/S] file.ts
 ```
@@ -48,6 +71,7 @@ Press `S` → jumps to second instance
 **Why?** VS Code's `customLabels` uses file path as the pattern key. Same file = same pattern for all instances. No API exists to override individual tab labels.
 
 ### Other Limits
+
 - **Untitled files** - Labels don't appear on unsaved "Untitled" files (VS Code API limitation).
 - **File tabs only** - Doesn't work with terminals, webviews, or custom editors
 - **26 tab maximum** - One key per letter
