@@ -1,5 +1,14 @@
 import * as vscode from 'vscode';
 
+export enum KeyAssignmentStrategy {
+    Filename = 'filename',
+    LeftHand = 'leftHand',
+    RightHand = 'rightHand',
+    HomeRow = 'homeRow'
+}
+
+export type LabelPatterns = Record<string, string> | undefined;
+
 export interface TabInfo {
     group: vscode.TabGroup;
     tab: vscode.Tab;
@@ -7,5 +16,3 @@ export interface TabInfo {
     index: number;
     uri?: vscode.Uri;
 }
-
-export type LabelPatterns = Record<string, string> | undefined;
